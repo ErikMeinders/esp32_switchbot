@@ -14,8 +14,6 @@
 #include <WiFiUdp.h>
 #include <NTPClient.h>
 
-// #include "secrets.h"
-
 static String token;
 static String secret;
 
