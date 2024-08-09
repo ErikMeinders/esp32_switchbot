@@ -1,3 +1,10 @@
+## [0.1.3](https://github.com/ErikMeinders/esp32_switchbot_api/compare/v0.1.2...v0.1.3) (2024-08-09)
+
+
+### Bug Fixes
+
+* updated pio repo URL ([be5f8da](https://github.com/ErikMeinders/esp32_switchbot_api/commit/be5f8da4c25867761247f8ee217b4b68e83d4b73))
+
 ## [0.1.2](https://github.com/ErikMeinders/esp32_switchbot_api/compare/v0.1.1...v0.1.2) (2024-08-09)
 
 
