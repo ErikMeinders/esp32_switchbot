@@ -1,3 +1,10 @@
+## [0.1.1](https://github.com/ErikMeinders/esp32_switchbot_api/compare/v0.1.0...v0.1.1) (2024-08-09)
+
+
+### Bug Fixes
+
+* modified includes ([a498e3d](https://github.com/ErikMeinders/esp32_switchbot_api/commit/a498e3db20df9dd02a254b243fd47b193de7b0d7))
+
 # [0.1.0](https://github.com/ErikMeinders/esp32_switchbot_api/compare/v0.0.0...v0.1.0) (2024-08-09)
 
 
