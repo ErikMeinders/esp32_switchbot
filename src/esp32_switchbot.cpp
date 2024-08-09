@@ -78,20 +78,26 @@ static String createSignature(const String& token, const String& secret, String&
 /// @param https 
 static void addHeaders(HTTPClient& https) 
 {
-    unsigned long t;
     UUID uuid;
     static String signature;
     static unsigned long lastSignatureTime = 0;
     static String nonce;
 
+    // if the signature is older than 30 seconds, create a new one
     if ((getEpochTime() - lastSignatureTime) > 30) {
+        
+        // time
+        unsigned long t = getEpochTime();
+        
+        // nonce
         uint32_t seed1 = random(999999999);
         uint32_t seed2 = random(999999999);
         uuid.seed(seed1, seed2);
         uuid.generate();
         nonce = String(uuid.toCharArray());
         nonce.toUpperCase();
-        t = getEpochTime();
+        
+        // signature
         signature = createSignature(token, secret, nonce, t);
         signature.toUpperCase();
         lastSignatureTime = t;
@@ -103,7 +109,7 @@ static void addHeaders(HTTPClient& https)
     https.addHeader("sign", signature);
     https.addHeader("nonce", nonce);
 
-    Serial.printf("Headers: %s, %s, %s, %s\n", token.c_str(), String(lastSignatureTime)+"000", signature.c_str(), nonce.c_str());
+    // Serial.printf("Headers: %s, %s, %s, %s\n", token.c_str(), String(lastSignatureTime)+"000", signature.c_str(), nonce.c_str());
 }
 
 /// @brief make a GET request to the SwitchBot API

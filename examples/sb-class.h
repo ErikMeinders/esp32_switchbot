@@ -26,7 +26,7 @@ private:
     void initDeviceList(bool blocking);
     void retrieveTemperatures();
 
-    DynamicJsonDocument m_deviceList;
+    JsonDocument m_deviceList;
     unsigned long m_lastDump;
     int m_currentDeviceIndex;
     

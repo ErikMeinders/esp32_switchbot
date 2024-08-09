@@ -6,7 +6,7 @@ SwitchBotManager& SwitchBotManager::getInstance() {
 }
 
 SwitchBotManager::SwitchBotManager()
-    : m_deviceList(40960),
+    : m_deviceList(),
       m_lastDump(0),
       m_currentDeviceIndex(0) {
 }
@@ -31,7 +31,8 @@ char* SwitchBotManager::getRoomFromDeviceName(const char* deviceName) {
 }
 
 void SwitchBotManager::initDeviceList(bool blocking = false) {
-    static DynamicJsonDocument doc(40960);
+    // static DynamicJsonDocument doc(40960);
+    static JsonDocument doc;
     String response;
     bool done = false;
     int httpCode = 0;
@@ -72,7 +73,7 @@ void SwitchBotManager::initDeviceList(bool blocking = false) {
         const char* deviceId = device["deviceId"];
 
         if (strstr(name, "thermometer") != NULL) {
-            JsonObject newDevice = m_deviceList["devices"].createNestedObject();
+            JsonObject newDevice = m_deviceList["devices"].add<JsonObject>();
             newDevice["roomName"] = getRoomFromDeviceName(name);
             newDevice["deviceId"] = deviceId;
             newDevice["temperature"] = 0.0;
@@ -108,7 +109,7 @@ void SwitchBotManager::retrieveTemperatures() {
     String response = esp32_switchbot_GET(Call, &httpCode);
     
     if (httpCode >= 200 && httpCode < 300) {
-        DynamicJsonDocument doc(4096);
+        JsonDocument doc;
         deserializeJson(doc, response);
         Serial.printf("Device: %s\n", roomName);
         serializeJsonPretty(doc, Serial);
