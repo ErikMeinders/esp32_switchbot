@@ -5,7 +5,7 @@
   "keywords": "esp32, switchbot, platformio",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ErikMeinders/knx_platformio.git"
+    "url": "https://github.com/ErikMeinders/esp32_switchbot_api.git"
   },
   "authors": [
     {
@@ -30,8 +30,7 @@
   },
   "dependencies": {
     "NTPClient": "arduino-libraries/NTPClient @ ^3.1.0",
-    "UUID": "robtillaart/UUID@^0.1.6"  
-
+    "UUID": "robtillaart/UUID@^0.1.6"
   },
   "build": {
     "libArchive": false
