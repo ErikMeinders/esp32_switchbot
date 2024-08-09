@@ -3,8 +3,7 @@
 
 #include <Arduino.h>
 #include <ArduinoJson.h>
-#include <NTPClient.h>
-#include <WiFiUdp.h>
+
 #include "esp32_switchbot.h"
 
 class SwitchBotManager {

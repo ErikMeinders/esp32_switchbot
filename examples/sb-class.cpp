@@ -1,4 +1,5 @@
 #include "sb-class.h"
+#include "secrets.h"
 
 SwitchBotManager& SwitchBotManager::getInstance() {
     static SwitchBotManager instance;
@@ -12,6 +13,7 @@ SwitchBotManager::SwitchBotManager()
 }
 
 void SwitchBotManager::init() {
+    esp32_switchbot_init(sb_token, sb_secret);
     initDeviceList(true);
 }
 
@@ -31,7 +33,6 @@ char* SwitchBotManager::getRoomFromDeviceName(const char* deviceName) {
 }
 
 void SwitchBotManager::initDeviceList(bool blocking = false) {
-    // static DynamicJsonDocument doc(40960);
     static JsonDocument doc;
     String response;
     bool done = false;
@@ -39,38 +40,48 @@ void SwitchBotManager::initDeviceList(bool blocking = false) {
 
 
     while (!done) {
+        
         response = esp32_switchbot_GET("/v1.1/devices", &httpCode);
 
-        if (httpCode < 200 || httpCode >= 300) {
-            if (!blocking) {
-                return;
-            }
-            delay(2000);
-        } else {
+        // check the HTTP status code
+
+        if (httpCode >= 200 && httpCode < 300) 
+        {
             deserializeJson(doc, response);
             const int statusCode = doc["statusCode"];
-            if (statusCode != 100) {
-                if (!blocking) {
-                    return;
-                }
-            } else {
+            
+            // inside the body, statusCode 100 means request is processed OK
+            // deviceList now contains the list of devices
+
+            if (statusCode == 100) 
+            {
                 done = true;
-            }
-        }
-        if (!done) {
-            Serial.println("Retrying (blocking)...");
+            } 
+            
+        } 
+  
+        if (!done) 
+        {
+            if(blocking) {
+                Serial.println("Retrying (blocking)...");
+                delay(2000);
+            } else return;
         }
     }
 
     JsonArray devices = doc["body"]["deviceList"];
     m_deviceList["devices"] = JsonArray();
+    
     printf("Found %d devices\n", devices.size());
     printf("Device List: ");
     serializeJsonPretty(devices, Serial);
     Serial.println();
+    
     for (JsonObject device : devices) {
         const char* name = device["deviceName"];
         const char* deviceId = device["deviceId"];
+
+        // if devicename contains thermometer, add it to the list
 
         if (strstr(name, "thermometer") != NULL) {
             JsonObject newDevice = m_deviceList["devices"].add<JsonObject>();
@@ -86,8 +97,8 @@ void SwitchBotManager::initDeviceList(bool blocking = false) {
 }
 
 void SwitchBotManager::retrieveTemperatures() {
-    JsonArray tempDevices = m_deviceList["devices"];
-    int deviceCount = tempDevices.size();
+    JsonArray thermometerDevices = m_deviceList["devices"];
+    int deviceCount = thermometerDevices.size();
 
     if (deviceCount == 0) {
         Serial.println("No devices found.");
@@ -98,7 +109,7 @@ void SwitchBotManager::retrieveTemperatures() {
         m_currentDeviceIndex = 0;
     }
 
-    JsonObject device = tempDevices[m_currentDeviceIndex];
+    JsonObject device = thermometerDevices[m_currentDeviceIndex];
     const char* deviceId = device["deviceId"];
     const char* roomName = device["roomName"];
 
@@ -111,9 +122,11 @@ void SwitchBotManager::retrieveTemperatures() {
     if (httpCode >= 200 && httpCode < 300) {
         JsonDocument doc;
         deserializeJson(doc, response);
+        
         Serial.printf("Device: %s\n", roomName);
         serializeJsonPretty(doc, Serial);
         Serial.println();
+        
         double temperature = doc["body"]["temperature"];
         
         if (temperature == 0) {
@@ -131,12 +144,16 @@ void SwitchBotManager::retrieveTemperatures() {
 }
 
 void SwitchBotManager::updateData() {
+    
+    // make sure we have a device list
     if (m_deviceList.size() == 0) {
         initDeviceList(false);
     }
     
+    // update the temperature for each device
     retrieveTemperatures();
     
+    // dump the device list every minute
     if (m_lastDump + 60000 < millis()) {
         m_lastDump = millis();
         dump();
@@ -144,8 +161,8 @@ void SwitchBotManager::updateData() {
 }
 
 float SwitchBotManager::getTemperatureForRoom(const char* roomName) {
-    JsonArray tempDevices = m_deviceList["devices"];
-    for (JsonObject device : tempDevices) {
+    JsonArray thermometerDevices = m_deviceList["devices"];
+    for (JsonObject device : thermometerDevices) {
         const char* room = device["roomName"];
         if (strcmp(room, roomName) == 0) {
             return device["temperature"];

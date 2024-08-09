@@ -1,6 +1,5 @@
 #include <WiFi.h>
 #include "sb-class.h"
-#include "secrets.h"
 
 // Replace with your network credentials
 const char* ssid = "hotel-new-akao";
@@ -17,7 +16,7 @@ void setup() {
     }
     Serial.println("Connected to WiFi");
 
-    esp32_switchbot_init(sb_token, sb_secret);
+    
 
     // Initialize SwitchBotManager
     SwitchBotManager::getInstance().init();
