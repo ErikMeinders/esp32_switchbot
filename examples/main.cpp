@@ -35,8 +35,8 @@ void loop() {
     temperature = sbManager.getTemperatureForRoom("Office");
     Serial.printf("Temperature in Office: %4.1f\n", temperature);
 
-    temperature = sbManager.getTemperatureForRoom("Living Room");
-    Serial.printf("Temperature in Living Room: %4.1f\n", temperature);
+    temperature = sbManager.getTemperatureForRoom("Musicroom");
+    Serial.printf("Temperature in Musicroom: %4.1f\n", temperature);
 
     delay(15000); // Reduced delay to 15 seconds for more frequent updates
 
