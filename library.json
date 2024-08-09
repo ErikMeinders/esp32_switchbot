@@ -1,0 +1,39 @@
+{
+  "name": "esp32_switchbot_api",
+  "version": "## Will be replaced by the build system based on the git tag ##",
+  "description": "Sample implementation for the SwitchBot API v1.1 on an ESP32",
+  "keywords": "knx, esp, platformio",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ErikMeinders/knx_platformio.git"
+  },
+  "authors": [
+    {
+      "name": "Erik Meinders",
+      "email": "erik@easytocloud.com",
+      "maintainer": true
+    }
+  ],
+  "license": "MIT",
+  "frameworks": "arduino",
+  "platforms": [
+    "espressif32"
+  ],
+  "export": {
+    "include": [
+      "src/*",
+      "include/*",
+      "examples/*",
+      "library.json",
+      "platformio.ini"
+    ]
+  },
+  "dependencies": {
+    "NTPClient": "arduino-libraries/NTPClient @ ^3.1.0",
+    "UUID": "robtillaart/UUID@^0.1.6"  
+
+  },
+  "build": {
+    "libArchive": false
+  }
+}
