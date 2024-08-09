@@ -2,7 +2,7 @@
   "name": "esp32_switchbot_api",
   "version": "## Will be replaced by the build system based on the git tag ##",
   "description": "Sample implementation for the SwitchBot API v1.1 on an ESP32",
-  "keywords": "knx, esp, platformio",
+  "keywords": "esp32, switchbot, platformio",
   "repository": {
     "type": "git",
     "url": "https://github.com/ErikMeinders/knx_platformio.git"

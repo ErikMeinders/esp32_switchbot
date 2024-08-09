@@ -103,7 +103,7 @@ static void addHeaders(HTTPClient& https)
     https.addHeader("sign", signature);
     https.addHeader("nonce", nonce);
 
-    // Serial.printf("Headers: %s, %s, %s, %s\n", token.c_str(), String(lastSignatureTime)+"000", signature.c_str(), nonce.c_str());
+    Serial.printf("Headers: %s, %s, %s, %s\n", token.c_str(), String(lastSignatureTime)+"000", signature.c_str(), nonce.c_str());
 }
 
 /// @brief make a GET request to the SwitchBot API
