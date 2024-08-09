@@ -1,3 +1,10 @@
+## [0.1.5](https://github.com/ErikMeinders/esp32_switchbot_api/compare/v0.1.4...v0.1.5) (2024-08-09)
+
+
+### Bug Fixes
+
+* improved CICD pipeline for versioning ([b9092e3](https://github.com/ErikMeinders/esp32_switchbot_api/commit/b9092e31c3fde0290c131e6c1a2f9397d2075cc7))
+
 ## [0.1.4](https://github.com/ErikMeinders/esp32_switchbot_api/compare/v0.1.3...v0.1.4) (2024-08-09)
 
 
